@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { register, login, getMe, updatePassword } = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
-const { validateFields, validateEmail, validatePassword, validateUsername } = require('../middlewares/validateRequest');
+const { validateFields, validateEmail, validatePassword, validateUsername, rateLimit } = require('../middlewares/validateRequest');
 
 // POST /api/auth/register
 router.post('/register',
+  rateLimit({ max: 10, windowMs: 15 * 60 * 1000 }),
   validateFields(['username', 'email', 'password']),
   validateEmail,
   validatePassword,
@@ -15,6 +16,7 @@ router.post('/register',
 
 // POST /api/auth/login
 router.post('/login',
+  rateLimit({ max: 10, windowMs: 15 * 60 * 1000 }),
   validateFields(['email', 'password']),
   login
 );

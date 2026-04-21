@@ -25,8 +25,7 @@ exports.getAllChallenges = async (req, res) => {
     console.error('Error en getAllChallenges:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener retos',
-      error: error.message
+      message: 'Error al obtener retos'
     });
   }
 };
@@ -62,8 +61,7 @@ exports.getAvailableChallenges = async (req, res) => {
     console.error('Error en getAvailableChallenges:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener retos disponibles',
-      error: error.message
+      message: 'Error al obtener retos disponibles'
     });
   }
 };
@@ -98,8 +96,7 @@ exports.getChallengeById = async (req, res) => {
     console.error('Error en getChallengeById:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener reto',
-      error: error.message
+      message: 'Error al obtener reto'
     });
   }
 };
@@ -130,8 +127,7 @@ exports.createChallenge = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Error al crear reto',
-      error: error.message
+      message: 'Error al crear reto'
     });
   }
 };
@@ -164,8 +160,7 @@ exports.updateChallenge = async (req, res) => {
     console.error('Error en updateChallenge:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al actualizar reto',
-      error: error.message
+      message: 'Error al actualizar reto'
     });
   }
 };
@@ -197,8 +192,7 @@ exports.deleteChallenge = async (req, res) => {
     console.error('Error en deleteChallenge:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al eliminar reto',
-      error: error.message
+      message: 'Error al eliminar reto'
     });
   }
 };

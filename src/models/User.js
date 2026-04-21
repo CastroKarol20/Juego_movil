@@ -129,8 +129,7 @@ const userSchema = new mongoose.Schema({
 // Índices
 userSchema.index({ totalPoints: -1 });
 userSchema.index({ level: -1 });
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
+
 
 // Hash password antes de guardar
 userSchema.pre('save', async function(next) {

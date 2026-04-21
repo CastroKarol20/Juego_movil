@@ -1,14 +1,5 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-
-// Generar JWT Token
-const generateToken = (userId) => {
-  return jwt.sign(
-    { id: userId },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRE }
-  );
-};
+const { generateToken } = require('../services/authService');
 
 // @desc    Registrar nuevo usuario
 // @route   POST /api/auth/register
@@ -71,8 +62,7 @@ exports.register = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Error al registrar usuario',
-      error: error.message
+      message: 'Error al registrar usuario'
     });
   }
 };
@@ -92,7 +82,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Buscar usuario (incluir password que está en select: false)
+    // Buscar usuario 
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -136,8 +126,7 @@ exports.login = async (req, res) => {
     console.error('Error en login:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al iniciar sesión',
-      error: error.message
+      message: 'Error al iniciar sesión'
     });
   }
 };
@@ -165,8 +154,7 @@ exports.getMe = async (req, res) => {
     console.error('Error en getMe:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener perfil',
-      error: error.message
+      message: 'Error al obtener perfil'
     });
   }
 };
@@ -186,10 +174,17 @@ exports.updatePassword = async (req, res) => {
     }
 
     // Buscar usuario con password
-    const user = await User.findById(req.user.id).select('+password');
+      const user = await User.findById(req.user.id).select('+password');
 
-    // Verificar contraseña actual
-    const isPasswordValid = await user.comparePassword(currentPassword);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'Usuario no encontrado'
+        });
+      }
+
+      // Verificar contraseña actual
+      const isPasswordValid = await user.comparePassword(currentPassword);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -211,8 +206,7 @@ exports.updatePassword = async (req, res) => {
     console.error('Error en updatePassword:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al actualizar contraseña',
-      error: error.message
+      message: 'Error al actualizar contraseña'
     });
   }
 };

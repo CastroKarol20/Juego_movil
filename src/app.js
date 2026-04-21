@@ -1,13 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/database'); // ← corregir ruta
+const connectDB = require('./config/database');
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const challengeRoutes = require('./routes/challengeRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const rankingRoutes = require('./routes/rankingRoutes');
+const achievementRoutes = require('./routes/achievementRoutes');
 
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
 const { requestLogger } = require('./middlewares/logger');
@@ -38,6 +39,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/ranking', rankingRoutes);
+app.use('/api/achievements', achievementRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

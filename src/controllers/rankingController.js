@@ -46,8 +46,7 @@ exports.getGlobalRanking = async (req, res) => {
     console.error('Error en getGlobalRanking:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener ranking',
-      error: error.message
+      message: 'Error al obtener ranking'
     });
   }
 };
@@ -72,8 +71,7 @@ exports.getRankingByCategory = async (req, res) => {
     console.error('Error en getRankingByCategory:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener ranking por categoría',
-      error: error.message
+      message: 'Error al obtener ranking por categoría'
     });
   }
 };
@@ -152,8 +150,7 @@ exports.getMyPosition = async (req, res) => {
     console.error('Error en getMyPosition:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener posición',
-      error: error.message
+      message: 'Error al obtener posición'
     });
   }
 };

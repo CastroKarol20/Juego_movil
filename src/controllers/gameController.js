@@ -51,8 +51,7 @@ exports.startGame = async (req, res) => {
     console.error('Error en startGame:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al iniciar juego',
-      error: error.message
+      message: 'Error al iniciar juego'
     });
   }
 };
@@ -163,8 +162,7 @@ exports.submitAnswer = async (req, res) => {
     console.error('Error en submitAnswer:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al enviar respuesta',
-      error: error.message
+      message: 'Error al enviar respuesta'
     });
   }
 };
@@ -329,8 +327,7 @@ exports.getGameHistory = async (req, res) => {
     console.error('Error en getGameHistory:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener historial',
-      error: error.message
+      message: 'Error al obtener historial'
     });
   }
 };
@@ -361,8 +358,7 @@ exports.getGameDetail = async (req, res) => {
     console.error('Error en getGameDetail:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener detalle del juego',
-      error: error.message
+      message: 'Error al obtener detalle del juego'
     });
   }
 };

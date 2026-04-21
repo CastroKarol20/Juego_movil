@@ -23,8 +23,7 @@ exports.getUserProfile = async (req, res) => {
     console.error('Error en getUserProfile:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener perfil',
-      error: error.message
+      message: 'Error al obtener perfil'
     });
   }
 };
@@ -77,8 +76,7 @@ exports.updateProfile = async (req, res) => {
     console.error('Error en updateProfile:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al actualizar perfil',
-      error: error.message
+      message: 'Error al actualizar perfil'
     });
   }
 };
@@ -113,8 +111,7 @@ exports.getUserStats = async (req, res) => {
     console.error('Error en getUserStats:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener estadísticas',
-      error: error.message
+      message: 'Error al obtener estadísticas'
     });
   }
 };
@@ -145,8 +142,7 @@ exports.getUserAchievements = async (req, res) => {
     console.error('Error en getUserAchievements:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener logros',
-      error: error.message
+      message: 'Error al obtener logros'
     });
   }
 };

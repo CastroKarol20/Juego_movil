@@ -1,0 +1,27 @@
+Ejemplos curl para probar endpoints (reemplaza valores entre <>):
+
+# Registrar usuario
+curl -X POST http://localhost:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","email":"test@example.com","password":"password123"}'
+
+# Login
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+
+# Obtener perfil (usar token de login)
+curl -X GET http://localhost:5000/api/auth/me \
+  -H "Authorization: Bearer <TOKEN>"
+
+# Iniciar juego
+curl -X POST http://localhost:5000/api/games/start \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"challengeId":"<CHALLENGE_ID>"}'
+
+# Enviar respuesta
+curl -X POST http://localhost:5000/api/games/submit \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"challengeId":"<CHALLENGE_ID>","answer":"mi respuesta","timeSpent":25}'

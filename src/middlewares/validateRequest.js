@@ -153,7 +153,12 @@ exports.validatePagination = (req, res, next) => {
 
 // @desc    Sanitizar input (prevenir XSS básico)
 exports.sanitizeInput = (req, res, next) => {
-  const sanitize = (obj) => {
+  const sanitize = (obj, keyName) => {
+    // No sanitizar campos sensibles relacionados con passwords
+    if (typeof keyName === 'string' && keyName.toLowerCase().includes('password')) {
+      return obj;
+    }
+
     if (typeof obj === 'string') {
       return obj
         .replace(/</g, '&lt;')
@@ -165,7 +170,7 @@ exports.sanitizeInput = (req, res, next) => {
     
     if (typeof obj === 'object' && obj !== null) {
       for (let key in obj) {
-        obj[key] = sanitize(obj[key]);
+        obj[key] = sanitize(obj[key], key);
       }
     }
     
