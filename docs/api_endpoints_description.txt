@@ -1,0 +1,160 @@
+MindForge - Documentación de Endpoints
+=====================================
+
+Este documento describe cada endpoint implementado en el backend, su propósito, método HTTP, seguridad requerida y ejemplos de uso.
+
+Formato por entrada:
+- Ruta: [METHOD] /api/...
+- Auth: (Public | Protected - Bearer token required | Optional)
+- Descripción: qué hace y para qué se creó
+- Body / Query (si aplica): campos esperados y ejemplo
+
+
+1) Salud
+- Ruta: [GET] /api/health
+- Auth: Public
+- Descripción: Endpoint de comprobación para verificar que la API está activa. Se usa en monitoreo y pruebas básicas.
+- Ejemplo respuesta: { "success": true, "message": "..." }
+
+2) Autenticación (Auth)
+- Ruta: [POST] /api/auth/register
+- Auth: Public
+- Descripción: Registrar nuevo usuario. Se creó para permitir a usuarios crear cuentas en la plataforma.
+- Body: { "username", "email", "password" }
+
+- Ruta: [POST] /api/auth/login
+- Auth: Public
+- Descripción: Autenticar usuario y obtener JWT para acceder a rutas protegidas.
+- Body: { "email", "password" }
+- Respuesta típica: { data: { user, token } }
+
+- Ruta: [GET] /api/auth/me
+- Auth: Protected
+- Descripción: Devuelve el perfil del usuario autenticado (útil para mostrar datos en la UI).
+
+- Ruta: [PUT] /api/auth/update-password
+- Auth: Protected
+- Descripción: Cambiar la contraseña del usuario autenticado.
+- Body: { "currentPassword", "newPassword" }
+
+
+3) Usuarios
+- Ruta: [GET] /api/users/profile/:userId
+- Auth: Protected
+- Descripción: Obtener perfil público/privado de un usuario por id. Se creó para ver perfiles en la app.
+
+- Ruta: [PUT] /api/users/profile
+- Auth: Protected
+- Descripción: Actualizar datos del perfil del usuario autenticado.
+- Body: campos editables (p.ej. username, bio)
+
+- Ruta: [GET] /api/users/stats
+- Auth: Protected
+- Descripción: Devuelve estadísticas personales (puntos, nivel, partidas, etc.) para dashboards.
+
+- Ruta: [GET] /api/users/achievements
+- Auth: Protected
+- Descripción: Lista de achievements desbloqueados por el usuario.
+
+
+4) Challenges (Retos)
+- Ruta: [GET] /api/challenges
+- Auth: Protected
+- Descripción: Lista de retos activos. Soporta filtros por query: ?category=&difficulty=.
+
+- Ruta: [GET] /api/challenges/available
+- Auth: Protected
+- Descripción: Retos filtrados según el nivel del usuario (recomendados/disponibles).
+
+- Ruta: [GET] /api/challenges/:id
+- Auth: Protected
+- Descripción: Detalle de un reto por su _id.
+
+- Ruta: [POST] /api/challenges
+- Auth: Protected (admin)
+- Descripción: Crear un nuevo reto. Se usa para añadir contenido al sistema.
+- Body ejemplo (valores válidos):
+  {
+    "title":"...",
+    "description":"...",
+    "category":"logica",        // valores: logica|matematica|patrones
+    "difficulty":"facil",       // valores: facil|medio|dificil
+    "question":"...",
+    "correctAnswer":"...",
+    "timeLimit":60,
+    "points":100,
+    "xpReward":20
+  }
+
+- Ruta: [PUT] /api/challenges/:id  (actualiza)  - Protected (admin)
+- Ruta: [DELETE] /api/challenges/:id  (soft delete) - Protected (admin)
+
+
+5) Juegos (Game flow)
+- Ruta: [POST] /api/games/start
+- Auth: Protected
+- Descripción: Inicia una partida para un `challengeId`. Registra inicio y devuelve datos de sesión/partida.
+- Body: { "challengeId": "<id>" }
+
+- Ruta: [POST] /api/games/submit
+- Auth: Protected
+- Descripción: Enviar la respuesta del jugador al reto. Calcula puntos, XP, tiempo y desbloquea logros si aplica.
+- Body: { "challengeId", "answer", "timeSpent" }
+
+- Ruta: [GET] /api/games/history
+- Auth: Protected
+- Descripción: Historial de partidas del usuario (paginado).
+
+- Ruta: [GET] /api/games/history/:id
+- Auth: Protected
+- Descripción: Detalle de una partida específica.
+
+
+6) Ranking
+- Ruta: [GET] /api/ranking
+- Auth: Protected
+- Descripción: Devuelve ranking global de jugadores (ordenado por puntos/otras métricas).
+
+- Ruta: [GET] /api/ranking/my-position
+- Auth: Protected
+- Descripción: Devuelve la posición del usuario actual en el ranking.
+
+- Ruta: [GET] /api/ranking/category/:category
+- Auth: Protected
+- Descripción: Ranking filtrado por categoría (usar categorías válidas).
+
+
+7) Achievements (Logros)
+- Ruta: [GET] /api/achievements
+- Auth: Optional (si envías token devuelve además qué logros están desbloqueados para ese usuario)
+- Descripción: Catálogo de logros disponibles en la plataforma. Se creó para mostrar progreso y objetivos.
+
+- Ruta: [POST] /api/achievements
+- Auth: Protected (admin)
+- Descripción: Crear un nuevo logro. Useful para admins que quieran añadir metas/recompensas.
+- Body ejemplo:
+  {
+    "achievementId":"first_win",
+    "name":"Primera victoria",
+    "description":"Gana tu primer juego",
+    "category":"victorias",
+    "condition":{ "type":"games_won", "value":1 },
+    "rewards":{ "xp":50, "points":100 },
+    "rarity":"comun"
+  }
+
+
+8) Validaciones y seguridad
+- Muchas rutas usan middlewares:
+  - `protect`: exige `Authorization: Bearer <token>`; valida el token y carga `req.user`.
+  - `optionalAuth`: intenta cargar usuario si envías token, pero deja pasar si no hay.
+  - `validateFields`, `validateObjectId`, `validatePagination`: validan inputs y evitan errores tempranos.
+
+
+9) Recomendaciones para pruebas
+- Orden recomendado: Login -> Create/List challenges -> Start/Submit game -> History -> Ranking -> Achievements -> Profile ops.
+- Mantener `{{baseUrl}}`, `{{token}}`, `{{challengeId}}`, `{{gameId}}`, `{{userId}}` como variables de colección en Postman.
+- Usar valores enum correctos (p.ej. category/difficulty/rarity) según `src/utils/constants.js` y modelos.
+
+
+Fin del documento.

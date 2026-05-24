@@ -16,6 +16,12 @@ const { sanitizeInput } = require('./middlewares/validateRequest');
 
 const app = express();
 
+// Logging middleware para ver TODAS las solicitudes
+app.use((req, res, next) => {
+  console.log(`📨 [${req.method}] ${req.path} - IP: ${req.ip || req.connection.remoteAddress}`);
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
