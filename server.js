@@ -14,8 +14,6 @@ const startServer = async () => {
       console.log('================================');
       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
       console.log(`🌍 Ambiente: ${process.env.NODE_ENV}`);
-      console.log(`📡 API: http://localhost:${PORT}/api`);
-      console.log(`📱 Accesible desde emulador: http://10.0.2.2:${PORT}/api`);
       console.log('================================');
     });
 
