@@ -101,6 +101,12 @@ const userSchema = new mongoose.Schema({
   achievements: [{
     type: String
   }],
+
+  // Retos completados
+  completedChallenges: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Challenge'
+  }],
   
   // Configuración
   settings: {

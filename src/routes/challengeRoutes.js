@@ -4,6 +4,8 @@ const {
   getAllChallenges,
   getAvailableChallenges,
   getChallengeById,
+  getChallengesByCategory,
+  getCategoriesSummary,
   createChallenge,
   updateChallenge,
   deleteChallenge
@@ -16,6 +18,12 @@ router.get('/', protect, getAllChallenges);
 
 // GET /api/challenges/available
 router.get('/available', protect, getAvailableChallenges);
+
+// GET /api/challenges/categories-summary
+router.get('/categories-summary', protect, getCategoriesSummary);
+
+// GET /api/challenges/by-category/:category
+router.get('/by-category/:category', protect, getChallengesByCategory);
 
 // GET /api/challenges/:id
 router.get('/:id', protect, validateObjectId('id'), getChallengeById);
