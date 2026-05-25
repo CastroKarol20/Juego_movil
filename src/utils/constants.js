@@ -22,7 +22,9 @@ const XP_REWARDS = {
 const CATEGORIES = {
   LOGIC: 'logica',
   MATH: 'matematica',
-  PATTERNS: 'patrones'
+  SPATIAL: 'espacial',
+  PROGRAMMING: 'programacion',
+  PUZZLE: 'puzzle'
 };
 
 // Dificultades
